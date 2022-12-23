@@ -1,0 +1,29 @@
+{
+  "name": "jp-crm-backend",
+  "version": "1.0.0",
+  "description": "This is a CRM tool to be used internally by Josplay.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "watch": "nodemon server.js",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ikeshegs/jp-crm-backend.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ikeshegs/jp-crm-backend/issues"
+  },
+  "homepage": "https://github.com/ikeshegs/jp-crm-backend#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.20"
+  }
+}
