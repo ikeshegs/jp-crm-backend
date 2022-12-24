@@ -1,0 +1,27 @@
+version: '3'
+
+services:
+  mongo:
+    container_name: mongo
+    image: mongo
+    volumes:
+    - ./data:/data/db
+    ports:
+    - '27017:27017'
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+
+  api:
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./
+    restart: always
+    ports:
+      - "5000:5000"
+    links:
+      - "mongo"
+    volumes:
+      - /app/node_modules
+      - ./:/app
