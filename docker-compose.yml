@@ -2,13 +2,15 @@ version: '3'
 
 services:
   mongo:
-    container_name: mongo
+    # container_name: mongo
     image: mongo
     volumes:
-    - ./data:/data/db
+    - ./mongodb-data:/data/db
     ports:
     - '27017:27017'
     restart: always
+    # networks:
+    #   - JP-CRM
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: example
@@ -25,3 +27,12 @@ services:
     volumes:
       - /app/node_modules
       - ./:/app
+      - ./.env:/app/.env
+    # depends_on:
+    #   - mongo
+    # networks:
+    #   - JP-CRM
+
+# networks:
+#   JP-CRM:
+#     driver: bridge

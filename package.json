@@ -5,8 +5,8 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "watch": "nodemon server.js",
-    "start": "node server.js"
+    "dev": "NODE_ENV=development nodemon -r dotenv/config server.js",
+    "start": "NODE_ENV=production node server.js"
   },
   "repository": {
     "type": "git",
@@ -21,6 +21,7 @@
   "homepage": "https://github.com/ikeshegs/jp-crm-backend#readme",
   "dependencies": {
     "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "mongodb": "^4.13.0",
     "mongoose": "^6.8.1",

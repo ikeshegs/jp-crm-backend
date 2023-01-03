@@ -1,8 +1,11 @@
+// const dotenv = require('dotenv');
 const http = require('http');
+
+// dotenv.config();
 
 const app = require('./app');
 const db = require('./config/mongodb');
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.NODE_ENV === 'production' ? process.env.PORT : 5000;
 
 const server = http.createServer(app);
 
