@@ -4,7 +4,7 @@ const { v4: uuidv4 } = require('uuid');
 const Schema = mongoose.Schema;
 
 const UserSchema = new Schema({
-  id: { type: String, required: true, default: () => uuidv4() },
+  uuid: { type: String, required: true, default: () => uuidv4() },
   name: { type: String, required: [true, 'Name is required'] },
   email: { type: String, unique: true, required: [true, 'Email is required'] },
   password: { type: String },
@@ -16,10 +16,9 @@ const UserSchema = new Schema({
   },
   // Access: { type: String, required: true, enum: ['RWE', 'WE'] },
   admin: { type: Boolean, default: false },
-  date: { type: Date, default: Date.now },
+  dateAdded: { type: Date, default: Date.now },
 });
 
 const User = mongoose.model('User', UserSchema);
 
 module.exports = User;
-// module.exports = UserSchema;
