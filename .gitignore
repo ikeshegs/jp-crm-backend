@@ -1,5 +1,5 @@
 /node_modules
 
-/mongodb-data/diagnostic.data/metrics.interim
+/mongodb-data
 
 .env
