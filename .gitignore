@@ -1,3 +1,8 @@
 /node_modules
 
+/mongodb-data/WiredTiger.turtle
+/mongodb-data/WiredTiger.wt
+/mongodb-data/diagnostic.data/metrics.interim
+/mongodb-data/journal/WiredTigerLog.0000000012
+
 .env

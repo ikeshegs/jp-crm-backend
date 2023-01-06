@@ -7,7 +7,10 @@ const UserSchema = new Schema({
   uuid: { type: String, required: true, default: () => uuidv4() },
   name: { type: String, required: [true, 'Name is required'] },
   email: { type: String, unique: true, required: [true, 'Email is required'] },
-  password: { type: String },
+  password: {
+    type: String,
+    required: true,
+  },
   emailConfirmed: { type: Boolean, default: false },
   department: {
     type: String,
