@@ -17,14 +17,20 @@ const createUser = async (req, res) => {
 
     const lowerCaseEmail = email.toLowerCase();
 
+    // const existingUser = await User.findOne({ email: lowerCaseEmail });
+
+    // if (existingUser) res.status(403).json({ message: 'User already exists' });
+
     const hashPassword = bcrypt.hash(password, SALT_ROUNDS);
 
-    const newUser = await User.save({
+    console.log(hashPassword)
+
+    const newUser = await User.create({
       name,
       email: lowerCaseEmail,
       password: hashPassword,
       department,
-      admin: admin || true,
+      admin
     });
 
     const token = await signToken(newUser);
