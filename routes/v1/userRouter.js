@@ -7,7 +7,7 @@ const User = require('../../models');
 const userRouter = express.Router();
 
 userRouter.post(
-  '/auth/user',
+  '/auth/signup',
   [
     body(['name', 'department']).isString().not().isEmpty().trim(),
     body(['email']).isEmail().normalizeEmail(),

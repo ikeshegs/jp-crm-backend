@@ -17,7 +17,6 @@ const UserSchema = new Schema({
     required: true,
     enum: ['Content', 'M4B', 'QA', 'AML', 'AMI'],
   },
-  // Access: { type: String, required: true, enum: ['RWE', 'WE'] },
   admin: { type: Boolean, default: false },
   dateAdded: { type: Date, default: Date.now },
 });
