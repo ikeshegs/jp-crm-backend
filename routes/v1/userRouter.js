@@ -3,6 +3,7 @@ const { body } = require('express-validator');
 
 const { createUser } = require('../../controllers/userController');
 const { loginUser } = require('../../controllers/authController');
+const { magicLinkLogin } = require('../../controllers/magicLinkController');
 // const User = require('../../models');
 
 const userRouter = express.Router();
@@ -33,5 +34,7 @@ userRouter.post('/auth/login', [
   ],
   loginUser
 );
+
+userRouter.post('/v1/verify-email?token', magicLinkLogin);
 
 module.exports = userRouter;

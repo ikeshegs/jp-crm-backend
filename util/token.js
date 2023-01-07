@@ -32,4 +32,13 @@ const verifyToken = async (payload) => {
   }
 };
 
-module.exports = { signToken, verifyToken };
+const decodeToken = async (token) => {
+  try {
+    const decodedToken = await jwt.decode(token);
+    return decodedToken;
+  } catch (error) {
+    return res.status(400).json({ status: 'error', message: error.message });
+  }
+}
+
+module.exports = { signToken, verifyToken, decodeToken };

@@ -2,7 +2,6 @@ const bcrypt = require('bcryptjs');
 const { validationResult } = require('express-validator');
 
 const { User } = require('../models/');
-const sendEmail = require('./emailController');
 const { sendEmailVerificationLink } = require('./magicLinkController');
 const { signToken, verifyToken } = require('../util/token');
 
@@ -32,7 +31,7 @@ const createUser = async (req, res) => {
         admin,
       });
 
-      sendEmailVerificationLink(newUser);
+      await sendEmailVerificationLink(newUser);
 
       const token = await signToken(newUser);
 
