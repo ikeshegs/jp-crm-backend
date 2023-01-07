@@ -6,7 +6,7 @@ const Schema = mongoose.Schema;
 const UserSchema = new Schema({
   uuid: { type: String, required: true, default: () => uuidv4() },
   name: { type: String, required: [true, 'Name is required'] },
-  email: { type: String, unique: true, required: [true, 'Email is required'] },
+  email: { type: String, unique: true, required: [true, 'Email is required'], lowercase: true },
   password: {
     type: String,
     required: true,
@@ -17,7 +17,6 @@ const UserSchema = new Schema({
     required: true,
     enum: ['Content', 'M4B', 'QA', 'AML', 'AMI'],
   },
-  // Access: { type: String, required: true, enum: ['RWE', 'WE'] },
   admin: { type: Boolean, default: false },
   dateAdded: { type: Date, default: Date.now },
 });

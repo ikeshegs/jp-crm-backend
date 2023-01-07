@@ -5,11 +5,12 @@ const mongoose = require('mongoose');
 
 let uri;
 
-if (process.env.NODE_ENV === 'production') {
-  uri = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@jp-crm-prod.cqgvkwh.mongodb.net/?retryWrites=true&w=majority`;
-} else {
-  uri = 'mongodb://mongo:27017/jp-crm-db';
-}
+// if (process.env.NODE_ENV === 'production') {
+//   uri = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@jp-crm-prod.cqgvkwh.mongodb.net/?retryWrites=true&w=majority`;
+// } else {
+//   uri = 'mongodb://mongo:27017/jp-crm-db';
+// }
+uri = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@jp-crm-prod.cqgvkwh.mongodb.net/?retryWrites=true&w=majority`;
 
 const options = {
   autoIndex: false, // Don't build indexes

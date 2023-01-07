@@ -2,9 +2,10 @@ const bcrypt = require('bcryptjs');
 const { validationResult } = require('express-validator');
 
 const { User } = require('../models/');
+const { sendEmailVerificationLink } = require('./magicLinkController');
 const { signToken, verifyToken } = require('../util/token');
 
-const SALT_ROUNDS = process.env.SALT_ROUNDS;
+const SALT = bcrypt.genSaltSync(10);
 
 const createUser = async (req, res) => {
   const errors = validationResult(req);
@@ -17,31 +18,36 @@ const createUser = async (req, res) => {
 
     const lowerCaseEmail = email.toLowerCase();
 
-    // const existingUser = await User.findOne({ email: lowerCaseEmail });
+    const existingUser = await User.findOne({ email: lowerCaseEmail });
 
-    // if (existingUser) res.status(403).json({ message: 'User already exists' });
+    if (!existingUser) {
+      const hashPassword = bcrypt.hashSync(password, SALT);
 
-    const hashPassword = bcrypt.hash(password, SALT_ROUNDS);
+      const newUser = await User.create({
+        name,
+        email: lowerCaseEmail,
+        password: hashPassword,
+        department,
+        admin,
+      });
 
-    console.log(hashPassword)
+      await sendEmailVerificationLink(newUser);
 
-    const newUser = await User.create({
-      name,
-      email: lowerCaseEmail,
-      password: hashPassword,
-      department,
-      admin
-    });
+      const token = await signToken(newUser);
 
-    const token = await signToken(newUser);
-
-    if (newUser) {
       return res
         .status(201)
-        .json({ message: 'User created successfully', token });
+        .json({
+          message: 'User created successfully',
+          emailVerification: 'Email Verification link has been sent to your email address',
+          newUser,
+          token,
+        });
     }
+
+    res.status(409).json({ status: 'error', message: 'User already exists' });
   } catch (err) {
-    return res.status(500).json({ message: err.message });
+    return res.status(500).json({ status: 'error', message: err.message });
   }
 };
 
