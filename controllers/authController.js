@@ -25,9 +25,10 @@ const loginUser = async (req, res) => {
         return res.status(200).json({ status: 'success', user, token });
       }
       return res
-        .status(400)
+        .status(404)
         .json({ status: 'error', message: 'Invalid User Details' });
     }
+    return res.status(404).json({ status: 'error', message: 'No User Found' });
   } catch (err) {
     return res.status(500).json({ status: 'error', message: err.message });
   }

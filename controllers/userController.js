@@ -2,6 +2,8 @@ const bcrypt = require('bcryptjs');
 const { validationResult } = require('express-validator');
 
 const { User } = require('../models/');
+const sendEmail = require('./emailController');
+const { sendEmailVerificationLink } = require('./magicLinkController');
 const { signToken, verifyToken } = require('../util/token');
 
 const SALT = bcrypt.genSaltSync(10);
@@ -30,11 +32,18 @@ const createUser = async (req, res) => {
         admin,
       });
 
+      sendEmailVerificationLink(newUser);
+
       const token = await signToken(newUser);
 
       return res
         .status(201)
-        .json({ message: 'User created successfully', newUser, token });
+        .json({
+          message: 'User created successfully',
+          emailVerification: 'Email Verification link has been sent to your email address',
+          newUser,
+          token,
+        });
     }
 
     res.status(409).json({ status: 'error', message: 'User already exists' });
