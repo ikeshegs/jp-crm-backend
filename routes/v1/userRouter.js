@@ -9,7 +9,7 @@ const { magicLinkLogin } = require('../../controllers/magicLinkController');
 const userRouter = express.Router();
 
 userRouter.post(
-  '/auth/signup',
+  '/v1/auth/signup',
   [
     body(['name', 'department']).isString().not().isEmpty().trim(),
     body(['email']).isEmail().normalizeEmail().trim(),
@@ -25,7 +25,7 @@ userRouter.post(
   createUser
 );
 
-userRouter.post('/auth/login', [
+userRouter.post('/v1/auth/login', [
   body(['email']).isEmail().normalizeEmail().trim(),
   body(['password'])
     .isString()
@@ -35,6 +35,6 @@ userRouter.post('/auth/login', [
   loginUser
 );
 
-userRouter.post('/v1/verify-email?token', magicLinkLogin);
+userRouter.post('/v1/verify-email', magicLinkLogin);
 
 module.exports = userRouter;
