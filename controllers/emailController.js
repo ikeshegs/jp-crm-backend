@@ -9,8 +9,6 @@ const sendEmail = async (receiver, subject, message) => {
     },
   });
 
-  console.log(process.env.EMAIL_ADDRESS)
-
   try {
     if (!receiver || !subject || !message) {
       throw Error('Message details is incomplete');

@@ -4,19 +4,14 @@ const { body } = require('express-validator');
 const { createUser } = require('../../controllers/userController');
 const { loginUser } = require('../../controllers/authController');
 const { magicLinkLogin } = require('../../controllers/magicLinkController');
-// const User = require('../../models');
 
 const userRouter = express.Router();
 
 userRouter.post(
-  '/auth/signup',
+  '/v1/auth/signup',
   [
     body(['name', 'department']).isString().not().isEmpty().trim(),
     body(['email']).isEmail().normalizeEmail().trim(),
-    // body(['email']).isEmail().normalizeEmail().custom(async value => {
-    //   const existingEmail = await User.findOne({ email: value });
-    //   if (existingEmail) throw new Error('User already exists');
-    // }),
     body(['password'])
       .isString()
       .isLength({ min: 8 })
@@ -25,7 +20,7 @@ userRouter.post(
   createUser
 );
 
-userRouter.post('/auth/login', [
+userRouter.post('/v1/auth/login', [
   body(['email']).isEmail().normalizeEmail().trim(),
   body(['password'])
     .isString()
@@ -35,6 +30,6 @@ userRouter.post('/auth/login', [
   loginUser
 );
 
-userRouter.post('/v1/verify-email?token', magicLinkLogin);
+userRouter.post('/v1/verify-email', magicLinkLogin);
 
 module.exports = userRouter;
