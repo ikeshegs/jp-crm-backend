@@ -10,23 +10,28 @@ const sendEmailVerificationLink = async (user) => {
   const subject = 'Verification Link';
   const message = `Hi ${name},
   Welcome to JP CRM. Click on the link to verify your email address: ${verifyEmailLink}
+  This link expires in 15 minutes.
   `;
 
   const responds = await sendEmail(email, subject, message);
   return responds;
-}
+};
 
 const magicLinkLogin = async (req, res) => {
   try {
     const { token } = req.query;
-    await verifyToken(token);
-    const decodedToken = await decodeToken(token)
+    const r = await verifyToken(token);
+    const decodedToken = await decodeToken(token);
     const user = await checkEmail(decodedToken.email);
-    const result = await User.findByIdAndUpdate(user._id, { $set: { emailConfirmed: true }});
-    return res.status(200).json({ status: 'success', result});
+    const result = await User.findByIdAndUpdate(
+      user._id,
+      { $set: { emailConfirmed: true } },
+      { returnDocument: 'after' } // This returns the document after it has been updated.
+    );
+    return res.status(200).json({ status: 'success', result });
   } catch (error) {
-    res.status(500).json({ status: 'error', message: error });
+    res.status(400).json({ status: 'error', message: 'Invalid Token' });
   }
-}
+};
 
 module.exports = { sendEmailVerificationLink, magicLinkLogin };

@@ -39,7 +39,7 @@ const createUser = async (req, res) => {
         .status(201)
         .json({
           message: 'User created successfully',
-          emailVerification: 'Email Verification link has been sent to your email address',
+          emailVerification: true,
           newUser,
           token,
         });
@@ -50,5 +50,13 @@ const createUser = async (req, res) => {
     return res.status(500).json({ status: 'error', message: err.message });
   }
 };
+
+// Edit User Info
+
+// Delete User
+
+// Get User
+
+// Get All Users
 
 module.exports = { createUser };
