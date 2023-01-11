@@ -1,7 +1,8 @@
+/* eslint-disable consistent-return */
 const bcrypt = require('bcryptjs');
 const { validationResult } = require('express-validator');
 
-const { User } = require('../models/');
+const { User } = require('../models');
 const { sendEmailVerificationLink } = require('./magicLinkController');
 const { signToken, verifyToken } = require('../util/token');
 
@@ -14,7 +15,9 @@ const createUser = async (req, res) => {
   }
 
   try {
-    const { name, email, password, department, admin } = req.body;
+    const {
+      name, email, password, department, admin,
+    } = req.body;
 
     const lowerCaseEmail = email.toLowerCase();
 
@@ -52,6 +55,13 @@ const createUser = async (req, res) => {
 };
 
 // Edit User Info
+const editUser = async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+
+};
 
 // Delete User
 
@@ -59,4 +69,4 @@ const createUser = async (req, res) => {
 
 // Get All Users
 
-module.exports = { createUser };
+module.exports = { createUser, editUser };
