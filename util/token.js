@@ -1,6 +1,8 @@
 const jwt = require('jsonwebtoken');
 
-const signToken = async (payload) => {
+const JWT_LIFE_SPAN = '1h';
+
+const signToken = async (payload, exp = JWT_LIFE_SPAN) => {
   if (!payload) throw new Error('No User details');
 
   const { uuid, email, admin } = payload;
@@ -11,22 +13,16 @@ const signToken = async (payload) => {
     iat: Math.floor(Date.now() / 1000) - 30,
   };
 
-  const token = await jwt.sign(jwtPayload, process.env.JWT_SECRET, {
-    expiresIn: 60 * 60 * 24,
-  });
+  const token = await jwt.sign(jwtPayload, process.env.JWT_SECRET, { expiresIn: exp });
   return token;
 };
 
-const verifyToken = async (payload) => {
+const verifyToken = async (payload, exp = JWT_LIFE_SPAN) => {
   try {
-    const result = jwt.verify(payload, process.env.JWT_SECRET, {
-      expiresIn: 60 * 60 * 24,
-    });
+    const result = jwt.verify(payload, process.env.JWT_SECRET, { expiresIn: exp });
     return result;
   } catch (error) {
-    return res
-      .status(400)
-      .json({ status: 'error', message: 'Invalid Token to verify' });
+    return res.status(400).json({ status: 'error', message: 'Invalid Token to verify' });
   }
 };
 
@@ -35,10 +31,8 @@ const decodeToken = async (token) => {
     const decodedToken = await jwt.decode(token);
     return decodedToken;
   } catch (error) {
-    return res
-      .status(400)
-      .json({ status: 'error', message: 'Invalid Token to Decode' });
+    return res.status(400).json({ status: 'error', message: 'Invalid Token to Decode' });
   }
-};
+}
 
 module.exports = { signToken, verifyToken, decodeToken };

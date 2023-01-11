@@ -5,7 +5,7 @@ const { checkEmail } = require('../util/checkEmail');
 
 const sendEmailVerificationLink = async (user) => {
   const { name, email } = user;
-  const token = await signToken(user);
+  const token = await signToken(user, '1m');
   const verifyEmailLink = `${process.env.LOGIN_BASE_URL}?token=${token}`;
   const subject = 'Verification Link';
   const message = `Hi ${name},
@@ -20,7 +20,7 @@ const sendEmailVerificationLink = async (user) => {
 const magicLinkLogin = async (req, res) => {
   try {
     const { token } = req.query;
-    const r = await verifyToken(token);
+    await verifyToken(token, '1m');
     const decodedToken = await decodeToken(token);
     const user = await checkEmail(decodedToken.email);
     const result = await User.findByIdAndUpdate(
@@ -30,7 +30,7 @@ const magicLinkLogin = async (req, res) => {
     );
     return res.status(200).json({ status: 'success', result });
   } catch (error) {
-    res.status(400).json({ status: 'error', message: 'Invalid Token' });
+    res.status(400).json({ status: 'error', message: error.message });
   }
 };
 

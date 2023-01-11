@@ -4,7 +4,6 @@ const { body } = require('express-validator');
 const { createUser } = require('../../controllers/userController');
 const { loginUser } = require('../../controllers/authController');
 const { magicLinkLogin } = require('../../controllers/magicLinkController');
-// const User = require('../../models');
 
 const userRouter = express.Router();
 
@@ -13,10 +12,6 @@ userRouter.post(
   [
     body(['name', 'department']).isString().not().isEmpty().trim(),
     body(['email']).isEmail().normalizeEmail().trim(),
-    // body(['email']).isEmail().normalizeEmail().custom(async value => {
-    //   const existingEmail = await User.findOne({ email: value });
-    //   if (existingEmail) throw new Error('User already exists');
-    // }),
     body(['password'])
       .isString()
       .isLength({ min: 8 })
