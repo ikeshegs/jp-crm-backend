@@ -22,7 +22,7 @@ const verifyToken = async (payload, exp = JWT_LIFE_SPAN) => {
     const result = jwt.verify(payload, process.env.JWT_SECRET, { expiresIn: exp });
     return result;
   } catch (error) {
-    return res.status(400).json({ status: 'error', message: 'Invalid Token to verify' });
+    throw Error(error.message);
   }
 };
 
@@ -31,8 +31,8 @@ const decodeToken = async (token) => {
     const decodedToken = await jwt.decode(token);
     return decodedToken;
   } catch (error) {
-    return res.status(400).json({ status: 'error', message: 'Invalid Token to Decode' });
+    throw Error(error.message);
   }
-}
+};
 
 module.exports = { signToken, verifyToken, decodeToken };

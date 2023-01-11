@@ -1,7 +1,7 @@
 const bcrypt = require('bcryptjs');
 const { validationResult } = require('express-validator');
 
-const { User } = require('../models/');
+const { User } = require('../models');
 const { signToken, verifyToken } = require('../util/token');
 
 const loginUser = async (req, res) => {

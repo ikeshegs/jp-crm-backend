@@ -1,3 +1,5 @@
+/* eslint-disable consistent-return */
+/* eslint-disable no-underscore-dangle */
 const { signToken, verifyToken, decodeToken } = require('../util/token');
 const sendEmail = require('./emailController');
 const { User } = require('../models');
@@ -26,7 +28,7 @@ const magicLinkLogin = async (req, res) => {
     const result = await User.findByIdAndUpdate(
       user._id,
       { $set: { emailConfirmed: true } },
-      { returnDocument: 'after' } // This returns the document after it has been updated.
+      { returnDocument: 'after' }, // This returns the document after it has been updated.
     );
     return res.status(200).json({ status: 'success', result });
   } catch (error) {
