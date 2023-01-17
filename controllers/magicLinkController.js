@@ -5,6 +5,7 @@ const sendEmail = require('./emailController');
 const { User } = require('../models');
 const { checkEmail } = require('../util/checkEmail');
 
+// This controller sends a verification link to the email address of the user after signup.
 const sendEmailVerificationLink = async (user) => {
   const { name, email } = user;
   const token = await signToken(user, '1m');
@@ -19,7 +20,8 @@ const sendEmailVerificationLink = async (user) => {
   return responds;
 };
 
-const magicLinkLogin = async (req, res) => {
+// This verifies the user's email address and updates their email confirmed status to true.
+const verifyEmailLink = async (req, res) => {
   try {
     const { token } = req.query;
     await verifyToken(token, '1m');
@@ -36,4 +38,4 @@ const magicLinkLogin = async (req, res) => {
   }
 };
 
-module.exports = { sendEmailVerificationLink, magicLinkLogin };
+module.exports = { sendEmailVerificationLink, verifyEmailLink };
