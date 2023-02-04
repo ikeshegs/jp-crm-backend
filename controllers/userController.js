@@ -42,7 +42,7 @@ const createUser = async (req, res) => {
         .status(201)
         .json({
           message: 'User created successfully',
-          emailVerification: true,
+          sendVerificationLink: true,
           newUser,
           token,
         });

@@ -1,7 +1,7 @@
 const nodemailer = require('nodemailer');
 
 const sendEmail = async (receiver, subject, message) => {
-  let transporter = nodemailer.createTransport({
+  const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
       user: process.env.EMAIL_ADDRESS,
@@ -14,7 +14,7 @@ const sendEmail = async (receiver, subject, message) => {
       throw Error('Message details is incomplete');
     }
 
-    let emailDetails = {
+    const emailDetails = {
       from: process.env.EMAIL_ADDRESS,
       to: receiver,
       subject,

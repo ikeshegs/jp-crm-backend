@@ -8,7 +8,7 @@ const checkEmail = async (email) => {
     }
     return existingUser;
   } catch (error) {
-    return res.status(500).json({ status: 'error', message: error });
+    return error;
   }
 }
 

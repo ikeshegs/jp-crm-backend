@@ -2,8 +2,8 @@ const express = require('express');
 const { body } = require('express-validator');
 
 const { createUser } = require('../../controllers/userController');
-const { loginUser } = require('../../controllers/authController');
-const { magicLinkLogin } = require('../../controllers/magicLinkController');
+const { loginUser, requestPasswordReset, resetPassword } = require('../../controllers/authController');
+const { verifyEmailLink } = require('../../controllers/magicLinkController');
 
 const userRouter = express.Router();
 
@@ -33,6 +33,11 @@ userRouter.post(
   loginUser,
 );
 
-userRouter.post('/v1/verify-email', magicLinkLogin);
+userRouter.post('/v1/verify-email', verifyEmailLink);
+userRouter.post('v1/passwordReset', resetPassword);
+userRouter.post('/v1/requestPasswordReset', requestPasswordReset);
+
+// Handle Google sign up
+// userRouter.post('/auth/google/callback', )
 
 module.exports = userRouter;
