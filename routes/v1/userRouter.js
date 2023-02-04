@@ -36,6 +36,6 @@ userRouter.post(
 userRouter.post('/v1/verify-email', verifyEmailLink);
 
 // Handle Google sign up
-userRouter.post('/auth/google/callback', )
+// userRouter.post('/auth/google/callback', )
 
 module.exports = userRouter;
