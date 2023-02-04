@@ -62,7 +62,7 @@ const requestPasswordReset = async (req, res) => {
     createdAt: Date.now(),
   }).save();
 
-  const link = `${process.env.LOGIN_BASE_URL}/passwordReset?token=${resetToken}&id=${user._id}`;
+  const link = `${process.env.BASE_URL}/passwordReset?token=${resetToken}&id=${user._id}`;
   const message = `
   Hi ${user.name},
 

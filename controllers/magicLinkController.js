@@ -9,7 +9,7 @@ const { checkEmail } = require('../util/checkEmail');
 const sendEmailVerificationLink = async (user) => {
   const { name, email } = user;
   const token = await signToken(user, '1m');
-  const verifyEmailLink = `${process.env.LOGIN_BASE_URL}?token=${token}`;
+  const verifyEmailLink = `${process.env.BASE_URL}/verify-email?token=${token}`;
   const subject = 'Verification Link';
   const message = `Hi ${name},
   Welcome to JP CRM. Click on the link to verify your email address: ${verifyEmailLink}
