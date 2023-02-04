@@ -16,8 +16,7 @@ const sendEmailVerificationLink = async (user) => {
   This link expires in 15 minutes.
   `;
 
-  const responds = await sendEmail(email, subject, message);
-  return responds;
+  sendEmail(email, subject, message);
 };
 
 // This verifies the user's email address and updates their email confirmed status to true.

@@ -6,10 +6,12 @@ const crypto = require('crypto');
 // const passport = require('passport');
 // const { strategy } = require('passport-google-oauth20');
 
-const { User, ResetPasswordToken } = require('../models');
+const { User, PasswordResetToken } = require('../models');
 const { signToken } = require('../util/token');
 const checkEmail = require('../util/checkEmail');
 const sendEmail = require('./emailController');
+
+const SALT = bcrypt.genSaltSync(10);
 
 const loginUser = async (req, res) => {
   const errors = validationResult(req);
@@ -45,22 +47,16 @@ const requestPasswordReset = async (req, res) => {
   const { email } = req.body;
   const user = await checkEmail(email);
 
-  if (!user) {
-    throw new Error('User does not exist');
-  }
+  if (!user) throw new Error('User does not exist');
 
-  const token = await ResetPasswordToken.findOne({ userId: user._id });
-  if (token) {
-    await token.deleteOne();
-  }
+  const token = await PasswordResetToken.findOne({ userId: user._id });
+  if (token) await token.deleteOne();
 
   const resetToken = crypto.randomBytes(32).toString('hex');
 
-  const SALT = bcrypt.genSaltSync(10);
-
   const hash = await bcrypt.hash(resetToken, SALT);
 
-  await new ResetPasswordToken({
+  await new PasswordResetToken({
     userId: user._id,
     token: hash,
     createdAt: Date.now(),
@@ -77,11 +73,49 @@ const requestPasswordReset = async (req, res) => {
   This link expires in 15 minutes.
   `;
   sendEmail(email, 'Password Reset Request', message);
+
+  return res
+    .status(200)
+    .json({
+      status: 'success',
+      message: 'You have successfully requested for a password reset',
+    });
 };
 
-const resetPasseord = async (req, res) => {
-  
-}
+const resetPassword = async (req, res) => {
+  const { token, id } = req.query;
+  const { password } = req.body;
+
+  const passwordToken = await PasswordResetToken.findOne({ id });
+  if (!passwordToken)
+    throw new Error('Invalid or expired password reset token');
+
+  const tokenIsValid = await bcrypt.compare(token, passwordToken.token);
+  if (!tokenIsValid) throw new Error('Invalid or expired password reset token');
+
+  const hash = await bcrypt.hash(password, SALT);
+  await User.updateOne(
+    { _id: id },
+    { $set: { password: hash } },
+    { new: true },
+  );
+
+  const user = await User.findById({ _id: id });
+  const message = `
+  Hi ${user.name},
+
+  Your password has been changed.
+  `;
+
+  sendEmail(user.email, 'Password Reset Successfully', message);
+
+  return res
+    .status(200)
+    .json({
+      status: 'success',
+      message: 'Password has been changed successfully',
+    });
+};
 
 // const googleAuthSignUp = async (req, res) => {
 //   const config = {
@@ -90,4 +124,4 @@ const resetPasseord = async (req, res) => {
 //   };
 // };
 
-module.exports = { loginUser, requestPasswordReset };
+module.exports = { loginUser, requestPasswordReset, resetPassword };
